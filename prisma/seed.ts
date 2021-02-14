@@ -1,23 +1,23 @@
-import { PrismaClient } from '@prisma/client';
-import * as dotenv from 'dotenv';
+import { PrismaClient } from "@prisma/client";
+import * as dotenv from "dotenv";
 
 const prisma = new PrismaClient();
 
 async function main() {
   dotenv.config();
-  console.log('Seeding...');
+  console.log("Seeding...");
 
   const user1 = await prisma.user.create({
     data: {
-      email: 'lisa@simpson.com',
-      firstname: 'Lisa',
-      lastname: 'Simpson',
-      password: '$2b$10$EpRnTzVlqHNP0.fUbXUwSOyuiXe/QLSUG6xNekdHgTGmrpHEfIoxm', // secret42
-      role: 'USER',
+      email: "lisa@simpson.com",
+      firstname: "Lisa",
+      lastname: "Simpson",
+      password: "$2b$10$EpRnTzVlqHNP0.fUbXUwSOyuiXe/QLSUG6xNekdHgTGmrpHEfIoxm", // secret42
+      role: "USER",
       posts: {
         create: {
-          title: 'Join us for Prisma Day 2019 in Berlin',
-          content: 'https://www.prisma.io/day/',
+          title: "Join us for Prisma Day 2019 in Berlin",
+          content: "https://www.prisma.io/day/",
           published: true,
         },
       },
@@ -25,21 +25,21 @@ async function main() {
   });
   const user2 = await prisma.user.create({
     data: {
-      email: 'bart@simpson.com',
-      firstname: 'Bart',
-      lastname: 'Simpson',
-      role: 'ADMIN',
-      password: '$2b$10$EpRnTzVlqHNP0.fUbXUwSOyuiXe/QLSUG6xNekdHgTGmrpHEfIoxm', // secret42
+      email: "bart@simpson.com",
+      firstname: "Bart",
+      lastname: "Simpson",
+      role: "ADMIN",
+      password: "$2b$10$EpRnTzVlqHNP0.fUbXUwSOyuiXe/QLSUG6xNekdHgTGmrpHEfIoxm", // secret42
       posts: {
         create: [
           {
-            title: 'Subscribe to GraphQL Weekly for community news',
-            content: 'https://graphqlweekly.com/',
+            title: "Subscribe to GraphQL Weekly for community news",
+            content: "https://graphqlweekly.com/",
             published: true,
           },
           {
-            title: 'Follow Prisma on Twitter',
-            content: 'https://twitter.com/prisma',
+            title: "Follow Prisma on Twitter",
+            content: "https://twitter.com/prisma",
             published: false,
           },
         ],
