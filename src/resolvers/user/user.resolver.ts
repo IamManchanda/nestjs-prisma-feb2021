@@ -1,5 +1,5 @@
-import { PrismaService } from './../../services/prisma.service';
-import { GqlAuthGuard } from '../../guards/gql-auth.guard';
+import { PrismaService } from "./../../services/prisma.service";
+import { GqlAuthGuard } from "../../guards/gql-auth.guard";
 import {
   Resolver,
   Query,
@@ -7,13 +7,13 @@ import {
   Mutation,
   Args,
   ResolveField,
-} from '@nestjs/graphql';
-import { UseGuards } from '@nestjs/common';
-import { UserEntity } from '../../decorators/user.decorator';
-import { User } from '../../models/user.model';
-import { ChangePasswordInput } from './dto/change-password.input';
-import { UserService } from 'src/services/user.service';
-import { UpdateUserInput } from './dto/update-user.input';
+} from "@nestjs/graphql";
+import { UseGuards } from "@nestjs/common";
+import { UserEntity } from "../../decorators/user.decorator";
+import { User } from "../../models/user.model";
+import { ChangePasswordInput } from "./dto/change-password.input";
+import { UserService } from "src/services/user.service";
+import { UpdateUserInput } from "./dto/update-user.input";
 
 @Resolver((of) => User)
 @UseGuards(GqlAuthGuard)
@@ -32,7 +32,7 @@ export class UserResolver {
   @Mutation((returns) => User)
   async updateUser(
     @UserEntity() user: User,
-    @Args('data') newUserData: UpdateUserInput
+    @Args("data") newUserData: UpdateUserInput
   ) {
     return this.userService.updateUser(user.id, newUserData);
   }
@@ -41,7 +41,7 @@ export class UserResolver {
   @Mutation((returns) => User)
   async changePassword(
     @UserEntity() user: User,
-    @Args('data') changePassword: ChangePasswordInput
+    @Args("data") changePassword: ChangePasswordInput
   ) {
     return this.userService.changePassword(
       user.id,
@@ -50,7 +50,7 @@ export class UserResolver {
     );
   }
 
-  @ResolveField('posts')
+  @ResolveField("posts")
   posts(@Parent() author: User) {
     return this.prisma.user.findUnique({ where: { id: author.id } }).posts();
   }

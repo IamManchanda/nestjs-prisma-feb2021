@@ -4,15 +4,15 @@ import {
   BadRequestException,
   ConflictException,
   UnauthorizedException,
-} from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { PasswordService } from './password.service';
-import { SignupInput } from '../resolvers/auth/dto/signup.input';
-import { PrismaService } from './prisma.service';
-import { Prisma, User } from '@prisma/client';
-import { Token } from '../models/token.model';
-import { ConfigService } from '@nestjs/config';
-import { SecurityConfig } from 'src/configs/config.interface';
+} from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import { PasswordService } from "./password.service";
+import { SignupInput } from "../resolvers/auth/dto/signup.input";
+import { PrismaService } from "./prisma.service";
+import { Prisma, User } from "@prisma/client";
+import { Token } from "../models/token.model";
+import { ConfigService } from "@nestjs/config";
+import { SecurityConfig } from "src/configs/config.interface";
 
 @Injectable()
 export class AuthService {
@@ -33,7 +33,7 @@ export class AuthService {
         data: {
           ...payload,
           password: hashedPassword,
-          role: 'USER',
+          role: "USER",
         },
       });
 
@@ -41,7 +41,10 @@ export class AuthService {
         userId: user.id,
       });
     } catch (e) {
-      if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2002') {
+      if (
+        e instanceof Prisma.PrismaClientKnownRequestError &&
+        e.code === "P2002"
+      ) {
         throw new ConflictException(`Email ${payload.email} already used.`);
       } else {
         throw new Error(e);
@@ -62,7 +65,7 @@ export class AuthService {
     );
 
     if (!passwordValid) {
-      throw new BadRequestException('Invalid password');
+      throw new BadRequestException("Invalid password");
     }
 
     return this.generateToken({
@@ -75,14 +78,14 @@ export class AuthService {
   }
 
   getUserFromToken(token: string): Promise<User> {
-    const id = this.jwtService.decode(token)['userId'];
+    const id = this.jwtService.decode(token)["userId"];
     return this.prisma.user.findUnique({ where: { id } });
   }
 
   generateToken(payload: { userId: string }): Token {
     const accessToken = this.jwtService.sign(payload);
 
-    const securityConfig = this.configService.get<SecurityConfig>('security');
+    const securityConfig = this.configService.get<SecurityConfig>("security");
     const refreshToken = this.jwtService.sign(payload, {
       expiresIn: securityConfig.refreshIn,
     });
